@@ -49,14 +49,14 @@ class EmailWorkflowAction extends SetPropertyWorkflowAction
         // template
         $templates = UserTemplate::get()->filter(['Use' => 'Layout']);
         $newFields->push(DropdownField::create('EmailTemplateID', $this->fieldLabel('EmailTemplateID'), $templates)
-            ->setEmptyString('-- default --'));
+            ->setEmptyString('-- required --'));
         // to
         $toTitle = _t('EmailWorkflowAction.EMAILTO', 'Send to');
         if ($this->EmailTarget === 'Manual') {
             $newFields->push(EmailField::create('EmailManual', $toTitle)->setDescription('Normal email address'));
         }
         else if ($this->EmailTarget === 'Field') {
-            $newFields->push(TextField::create('EmailField', $toTitle)->setDescription('Name of target field'));
+            $newFields->push(TextField::create('EmailField', 'Email field')->setDescription('Name of target field'));
         }
         else if ($this->EmailTarget === 'Member') {
             $newFields->push(DropdownField::create('EmailMemberID', $toTitle, Member::get()->map()));
