@@ -50,7 +50,14 @@ class WorkflowedElement extends DataExtension
             $data = json_decode($req->getBody());
             if ($data) {
                 $pub_action = ($data->operationName == 'PublishBlock');
-                $cur_block = ($data->variables->blockId == $this->owner->ID);
+                $cur_block = false;
+
+                if (isset($data->variables->blockId)) {
+                    $cur_block = $data->variables->blockId == $this->owner->ID;
+                } else if (isset($data->variables->id)) {
+                    $cur_block = $data->variables->id == $this->owner->ID;
+                }
+
                 return ($pub_action && $cur_block);
             }
         } catch (\Exception $e) {
